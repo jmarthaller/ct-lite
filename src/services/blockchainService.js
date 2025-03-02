@@ -11,7 +11,7 @@ const getBalance = async (address) => {
   try {
     const response = await axios.get(`${BASE_URL}/balance?active=${address}`);
     if (response.data[address]) {
-      return { success: true, balance: response.data[address].final_balance }; // Balance in satoshis
+      return { success: true, balance: response.data[address].final_balance };
     }
     return { success: false, message: "Invalid Bitcoin address or no data available." };
   } catch (error) {

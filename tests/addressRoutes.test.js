@@ -8,14 +8,14 @@ app.use(express.json());
 app.use("/addresses", addressRoutes);
 
 beforeEach(() => {
-  store.addresses.clear(); // Reset store before each test
+  store.addresses.clear();
 });
 
 describe("Address Routes", () => {
-  test("POST /addresses - should add a new address", async () => {
+  test("POST /addresses - should add a new valid address", async () => {
     const response = await request(app)
       .post("/addresses")
-      .send({ address: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" }); // Valid BTC address
+      .send({ address: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" });
 
     expect(response.status).toBe(201);
     expect(response.body).toEqual({ success: true, message: "Address added successfully" });
@@ -38,7 +38,7 @@ describe("Address Routes", () => {
 
   test("GET /addresses - should list all addresses", async () => {
     await request(app).post("/addresses").send({ address: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" });
-    await request(app).post("/addresses").send({ address: "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy" }); // Another valid BTC address
+    await request(app).post("/addresses").send({ address: "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy" });
 
     const response = await request(app).get("/addresses");
     expect(response.status).toBe(200);
