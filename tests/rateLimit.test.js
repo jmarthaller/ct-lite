@@ -19,7 +19,6 @@ describe("Rate Limiting Middleware", () => {
     }
     
     const response = await request(app).get("/");
-    console.log("Actual response:", response.body);
     expect(response.status).toBe(429);
     expect(response.body).toEqual({ success: false, message: "You have made too many requests, please try again later." });
   });

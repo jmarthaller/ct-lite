@@ -172,7 +172,7 @@ npm test
 ---
 
 ## Potential Improvements
-- Persist data to Database (preferrably Postgres or DynamoDB)
+- Persist data to Database (preferably Postgres)
 - Improve Bitcoin address validation (support Bech32 format)
 - Add authentication (JWT or API keys)
 - Implement WebSockets for real-time balance updates
