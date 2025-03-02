@@ -1,4 +1,5 @@
 const addressService = require("../services/addressService");
+const blockchainService = require("../services/blockchainService");
 
 const addAddress = (req, res) => {
   const { address } = req.body;
@@ -20,4 +21,16 @@ const listAddresses = (req, res) => {
   return res.json({ addresses });
 };
 
-module.exports = { addAddress, removeAddress, listAddresses };
+const getBalance = async (req, res) => {
+  const { address } = req.params;
+  const result = await blockchainService.getBalance(address);
+  return res.status(result.success ? 200 : 500).json(result);
+};
+
+const getTransactions = async (req, res) => {
+  const { address } = req.params;
+  const result = await blockchainService.getTransactions(address);
+  return res.status(result.success ? 200 : 500).json(result);
+};
+
+module.exports = { addAddress, removeAddress, listAddresses, getBalance, getTransactions };
