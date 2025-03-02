@@ -33,4 +33,7 @@ This project was developed as part of a take-home assignment to demonstrate back
 
 ## Design Decisions
 
+## Potential Improvements
+- Persist data to Database (preferrably Postgres or DynamoDB)
+
 Authored by Jacob Marthaller
