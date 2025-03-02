@@ -146,6 +146,30 @@ curl -X GET "http://localhost:3000/addresses/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa/
 
 ---
 
+## Future Database Schema 
+
+When migrating to a database (e.g., PostgreSQL), the following schema could be used:
+
+### addresses Table
+
+| Column     | Type      | Description                |
+|------------|-----------|----------------------------|
+| id         | UUID      | Unique identifier          |
+| address    | STRING    | Bitcoin address (unique)   |
+| created_at | TIMESTAMP | Date added to tracking     |
+
+### transactions Table
+
+| Column     | Type      | Description                    |
+|------------|-----------|--------------------------------|
+| id         | UUID      | Unique identifier              |
+| address    | STRING    | Associated Bitcoin address     |
+| tx_hash    | STRING    | Unique transaction hash        |
+| value      | INTEGER   | Transaction value in Satoshis  |
+| timestamp  | TIMESTAMP | When transaction occurred      |
+
+---
+
 ## Testing
 ### Run All Tests
 ```sh
