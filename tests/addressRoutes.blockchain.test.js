@@ -22,12 +22,14 @@ describe("Address Routes - Blockchain API", () => {
 
   test("GET /addresses/:address/transactions - should return transactions", async () => {
     blockchainService.getTransactions.mockResolvedValue({ success: true, transactions: [{ hash: "tx123" }] });
-
+  
     const response = await request(app).get("/addresses/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa/transactions");
-
+  
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ success: true, transactions: [{ hash: "tx123" }] });
-    expect(blockchainService.getTransactions).toHaveBeenCalledWith("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
+  
+    // Ensure function is called with default limit and offset
+    expect(blockchainService.getTransactions).toHaveBeenCalledWith("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa", 10, 0);
   });
 
   test("GET /addresses/:address/balance - should return error on failure", async () => {

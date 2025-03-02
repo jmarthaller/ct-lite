@@ -27,7 +27,7 @@ describe("Blockchain Service", () => {
     expect(result).toEqual({ success: false, message: "Error fetching balance from Blockchain.com" });
   });
 
-  test("should fetch transactions for a valid Bitcoin address", async () => {
+  test("should fetch transactions for a valid Bitcoin address with default pagination", async () => {
     const mockResponse = {
       data: {
         txs: [{ hash: "sampleTxHash", value: 5000000 }]
@@ -39,7 +39,26 @@ describe("Blockchain Service", () => {
     const result = await blockchainService.getTransactions("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
 
     expect(result).toEqual({ success: true, transactions: [{ hash: "sampleTxHash", value: 5000000 }] });
-    expect(axios.get).toHaveBeenCalledWith("https://blockchain.info/rawaddr/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
+    expect(axios.get).toHaveBeenCalledWith(
+      "https://blockchain.info/rawaddr/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?limit=10&offset=0"
+    );
+  });
+
+  test("should fetch transactions for a valid Bitcoin address with custom pagination", async () => {
+    const mockResponse = {
+      data: {
+        txs: [{ hash: "tx11", value: 4500000 }]
+      }
+    };
+
+    axios.get.mockResolvedValue(mockResponse);
+
+    const result = await blockchainService.getTransactions("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa", 5, 10);
+
+    expect(result).toEqual({ success: true, transactions: [{ hash: "tx11", value: 4500000 }] });
+    expect(axios.get).toHaveBeenCalledWith(
+      "https://blockchain.info/rawaddr/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?limit=5&offset=10"
+    );
   });
 
   test("should return an error for invalid Bitcoin address transaction request", async () => {

@@ -12,8 +12,8 @@ describe("Bitcoin Address Validation", () => {
   });
 
   test("should reject an address that is too short or too long", () => {
-    expect(addressService.isValidBitcoinAddress("1A1zP1eP5Q")).toBe(false); // Too short
-    expect(addressService.isValidBitcoinAddress("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNaX123")).toBe(false); // Too long
+    expect(addressService.isValidBitcoinAddress("1A1zP1eP5Q")).toBe(false);
+    expect(addressService.isValidBitcoinAddress("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNaX123")).toBe(false); 
   });
 });
 

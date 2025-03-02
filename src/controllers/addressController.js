@@ -29,7 +29,10 @@ const getBalance = async (req, res) => {
 
 const getTransactions = async (req, res) => {
   const { address } = req.params;
-  const result = await blockchainService.getTransactions(address);
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = parseInt(req.query.offset) || 0;
+
+  const result = await blockchainService.getTransactions(address, limit, offset);
   return res.status(result.success ? 200 : 500).json(result);
 };
 
