@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const addressController = require("../controllers/addressController");
 
-// Placeholder route
-router.get("/", (req, res) => {
-  res.json({ message: "Address routes are working!" });
-});
+router.post("/", addressController.addAddress);
+router.delete("/:address", addressController.removeAddress);
+router.get("/", addressController.listAddresses);
 
 module.exports = router;
