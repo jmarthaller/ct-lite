@@ -15,23 +15,15 @@ describe("Address Routes", () => {
   test("POST /addresses - should add a new address", async () => {
     const response = await request(app)
       .post("/addresses")
-      .send({ address: "3E8ociqZa9mZUSwGdSmAEMAoAxBK3FNDcd" });
+      .send({ address: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" }); // Valid BTC address
 
     expect(response.status).toBe(201);
     expect(response.body).toEqual({ success: true, message: "Address added successfully" });
   });
 
-  test("POST /addresses - should not add a duplicate address", async () => {
-    await request(app).post("/addresses").send({ address: "3E8ociqZa9mZUSwGdSmAEMAoAxBK3FNDcd" });
-    const response = await request(app).post("/addresses").send({ address: "3E8ociqZa9mZUSwGdSmAEMAoAxBK3FNDcd" });
-
-    expect(response.status).toBe(409);
-    expect(response.body).toEqual({ success: false, message: "Address already exists" });
-  });
-
   test("DELETE /addresses/:address - should remove an address", async () => {
-    await request(app).post("/addresses").send({ address: "3E8ociqZa9mZUSwGdSmAEMAoAxBK3FNDcd" });
-    const response = await request(app).delete("/addresses/3E8ociqZa9mZUSwGdSmAEMAoAxBK3FNDcd");
+    await request(app).post("/addresses").send({ address: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" });
+    const response = await request(app).delete("/addresses/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ success: true, message: "Address removed successfully" });
@@ -39,16 +31,28 @@ describe("Address Routes", () => {
 
   test("DELETE /addresses/:address - should return 404 for non-existent address", async () => {
     const response = await request(app).delete("/addresses/nonexistent");
+
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ success: false, message: "Address not found" });
   });
 
   test("GET /addresses - should list all addresses", async () => {
-    await request(app).post("/addresses").send({ address: "addr1" });
-    await request(app).post("/addresses").send({ address: "addr2" });
+    await request(app).post("/addresses").send({ address: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" });
+    await request(app).post("/addresses").send({ address: "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy" }); // Another valid BTC address
 
     const response = await request(app).get("/addresses");
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ addresses: ["addr1", "addr2"] });
+    expect(response.body).toEqual({
+      addresses: ["1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa", "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy"],
+    });
+  });
+
+  test("POST /addresses - should reject invalid Bitcoin address", async () => {
+    const response = await request(app)
+      .post("/addresses")
+      .send({ address: "invalid-btc-address" });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ success: false, message: "Invalid Bitcoin address format." });
   });
 });

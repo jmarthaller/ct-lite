@@ -6,7 +6,7 @@ const addAddress = (req, res) => {
     return res.status(400).json({ success: false, message: "Address is required" });
   }
   const result = addressService.addAddress(address);
-  return res.status(result.success ? 201 : 409).json(result);
+  return res.status(result.success ? 201 : 400).json(result);
 };
 
 const removeAddress = (req, res) => {
