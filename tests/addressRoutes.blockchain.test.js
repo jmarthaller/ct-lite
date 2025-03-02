@@ -28,7 +28,6 @@ describe("Address Routes - Blockchain API", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ success: true, transactions: [{ hash: "tx123" }] });
   
-    // Ensure function is called with default limit and offset
     expect(blockchainService.getTransactions).toHaveBeenCalledWith("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa", 10, 0);
   });
 

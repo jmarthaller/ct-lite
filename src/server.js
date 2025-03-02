@@ -1,16 +1,13 @@
 const express = require("express");
+const addressRoutes = require("./routes/addressRoutes");
+const apiLimiter = require("./middleware/rateLimit");
 
 const app = express();
+app.use(express.json());
 
-app.use(express.json()); 
-
-const addressRoutes = require("./routes/addressRoutes");
+app.use(apiLimiter);
 
 app.use("/addresses", addressRoutes);
-
-app.get("/", (req, res) => {
-  res.send("CoinTracker Lite API is running...");
-});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
